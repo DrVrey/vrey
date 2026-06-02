@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA Water Infrastructure: Threat Awareness & Resilience Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08090d;
+    --surface: #0e1118;
+    --card: #13161f;
+    --border: #1e2330;
+    --accent: #00c8ff;
+    --accent2: #ff4b4b;
+    --accent3: #f5c518;
+    --text: #d4dae8;
+    --muted: #6b7590;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --display: 'Bebas Neue', cursive;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    position: relative;
+    padding: 60px 40px 50px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0c14 0%, #0d1020 100%);
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,200,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .brand-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    border: 1px solid rgba(0,200,255,0.3);
+    padding: 5px 12px;
+    display: inline-block;
+  }
+  .classification {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent3);
+    border: 1px solid rgba(245,197,24,0.4);
+    padding: 5px 12px;
+    display: inline-block;
+  }
+  .header h1 {
+    font-family: var(--display);
+    font-size: clamp(36px, 6vw, 72px);
+    letter-spacing: 2px;
+    line-height: 0.95;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .header h1 span { color: var(--accent); }
+  .header-sub {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 16px;
+  }
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .meta-value {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    background: rgba(255,75,75,0.08);
+    border-left: 3px solid var(--accent2);
+    border-top: 1px solid rgba(255,75,75,0.2);
+    border-bottom: 1px solid rgba(255,75,75,0.2);
+    padding: 18px 40px;
+  }
+  .alert-banner p {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #ff8080;
+    letter-spacing: 0.5px;
+  }
+  .alert-banner strong { color: var(--accent2); }
+
+  /* SECTIONS */
+  .section {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    min-width: 40px;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+  .section-title span { color: var(--accent); }
+
+  /* CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(0,200,255,0.3); }
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .card-title {
+    font-family: var(--display);
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .card-accent { border-top: 2px solid var(--accent); }
+  .card-red { border-top: 2px solid var(--accent2); }
+  .card-yellow { border-top: 2px solid var(--accent3); }
+
+  /* THREAT LEVELS */
+  .threat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+  .threat-table th {
+    text-align: left;
+    padding: 10px 16px;
+    background: var(--surface);
+    color: var(--muted);
+    letter-spacing: 2px;
+    font-size: 10px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .threat-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .threat-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .badge-critical { background: rgba(255,75,75,0.2); color: #ff6b6b; border: 1px solid rgba(255,75,75,0.3); }
+  .badge-high { background: rgba(255,140,0,0.15); color: #ffaa40; border: 1px solid rgba(255,140,0,0.3); }
+  .badge-medium { background: rgba(245,197,24,0.12); color: #f5c518; border: 1px solid rgba(245,197,24,0.25); }
+  .badge-low { background: rgba(0,200,255,0.1); color: var(--accent); border: 1px solid rgba(0,200,255,0.2); }
+
+  /* STAT BLOCKS */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .stat-block {
+    background: var(--card);
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--display);
+    font-size: 40px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    line-height: 1;
+    display: block;
+  }
+  .stat-num.red { color: var(--accent2); }
+  .stat-num.yellow { color: var(--accent3); }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* DEPENDENCY MAP */
+  .dep-chain {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 24px 0;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+  .dep-node {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    color: var(--text);
+    letter-spacing: 1px;
+    text-align: center;
+    min-width: 120px;
+  }
+  .dep-node.critical { border-color: rgba(255,75,75,0.4); color: #ff8080; }
+  .dep-node.source { border-color: rgba(0,200,255,0.4); color: var(--accent); }
+  .dep-arrow {
+    color: var(--muted);
+    font-size: 18px;
+    padding: 0 4px;
+  }
+
+  /* IMPACT ZONES */
+  .zone-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .zone-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .zone-name {
+    font-family: var(--display);
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .zone-pop {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  .zone-items { list-style: none; }
+  .zone-items li {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .zone-items li:last-child { border-bottom: none; }
+  .zone-risk { font-family: var(--mono); font-size: 10px; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -28px; top: 6px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .tl-item.red::before { background: var(--accent2); }
+  .tl-item.yellow::before { background: var(--accent3); }
+  .tl-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .tl-item.red .tl-time { color: var(--accent2); }
+  .tl-item.yellow .tl-time { color: var(--accent3); }
+  .tl-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .tl-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* DISCLOSURE BLOCK */
+  .disclosure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .disc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+  }
+  .disc-card.yellow { border-left-color: var(--accent3); }
+  .disc-card.red { border-left-color: var(--accent2); }
+  .disc-org {
+    font-family: var(--display);
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .disc-full {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .disc-contact {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .disc-card.yellow .disc-contact { color: var(--accent3); }
+  .disc-card.red .disc-contact { color: #ff8080; }
+  .disc-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* RECOMMENDATIONS */
+  .rec-list { counter-reset: rec; }
+  .rec-item {
+    display: flex;
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-num {
+    font-family: var(--display);
+    font-size: 36px;
+    color: var(--border);
+    line-height: 1;
+    min-width: 48px;
+  }
+  .rec-body {}
+  .rec-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .rec-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .rec-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    padding: 2px 8px;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+  .rec-tag.physical { background: rgba(255,75,75,0.1); color: #ff8080; border: 1px solid rgba(255,75,75,0.2); }
+  .rec-tag.cyber { background: rgba(0,200,255,0.1); color: var(--accent); border: 1px solid rgba(0,200,255,0.2); }
+  .rec-tag.policy { background: rgba(245,197,24,0.1); color: var(--accent3); border: 1px solid rgba(245,197,24,0.2); }
+  .rec-tag.natural { background: rgba(100,255,100,0.08); color: #80ff80; border: 1px solid rgba(100,255,100,0.2); }
+
+  /* QUOTE BLOCK */
+  .pull-quote {
+    border-left: 3px solid var(--accent2);
+    background: rgba(255,75,75,0.04);
+    padding: 20px 28px;
+    margin: 28px 0;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .pull-quote cite {
+    display: block;
+    margin-top: 10px;
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .footer-brand {
+    font-family: var(--display);
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--muted);
+  }
+  .footer-brand span { color: var(--accent); }
+  .footer-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    line-height: 1.7;
+    max-width: 480px;
+    text-align: right;
+  }
+
+  /* PROSE */
+  .prose { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
+  .prose strong { color: var(--text); font-weight: 600; }
+  .prose em { color: var(--accent); font-style: normal; font-family: var(--mono); font-size: 12px; }
+
+  /* SEPARATOR */
+  .sep { height: 1px; background: var(--border); margin: 32px 0; }
+  .mono-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .header { padding: 40px 20px; }
+    .container { padding: 0 20px; }
+    .dep-chain { flex-direction: column; }
+    .dep-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="container">
+    <div class="header-top">
+      <span class="brand-tag">DRVREY™ CIVIC INTELLIGENCE SERIES</span>
+      <span class="classification">PUBLIC AWARENESS DOCUMENT — NOT CLASSIFIED</span>
+    </div>
+    <h1>SOUTH AFRICA<br><span>WATER INFRASTRUCTURE</span><br>THREAT AWARENESS<br>& RESILIENCE REPORT</h1>
+    <div class="header-sub">Valve systems · Critical infrastructure · Threat landscape · Responsible disclosure</div>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Compiled</span>
+        <span class="meta-value">June 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Focus Region</span>
+        <span class="meta-value">Gauteng — Joburg / Tshwane / Ekurhuleni</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Scope</span>
+        <span class="meta-value">Valve Control · SCADA · Physical · Natural Events</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Author</span>
+        <span class="meta-value">Dr. M.D. Vrey (BDS) — Civic Research</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT BANNER -->
+<div class="alert-banner">
+  <div class="container">
+    <p><strong>⚠ NOTICE:</strong> This document is produced for public awareness, academic, and responsible-disclosure purposes only. It contains no exploitation instructions. Threat descriptions are conceptual and based entirely on publicly reported events in South Africa. Disclosure pathways listed are official channels.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: EXECUTIVE SUMMARY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01 //</span>
+      <h2 class="section-title">EXECUTIVE <span>SUMMARY</span></h2>
+    </div>
+
+    <p class="prose">South Africa's water infrastructure — anchored by <strong>Rand Water</strong>, Africa's largest water utility — is the circulatory system of the Gauteng economy. It supplies approximately <strong>19 million people</strong> across Johannesburg, Tshwane, Ekurhuleni, and 14 additional municipalities, plus 27 active mines. Industrial valve systems are the mechanical gatekeepers of this entire network: they regulate inflow, outflow, pressure zones, chemical dosing, and emergency isolation.</p>
+
+    <p class="prose">This report documents that the infrastructure is <strong>already operating in a pre-failure state</strong> — evidenced by repeated real-world collapse events — and assesses the threat landscape across four vectors: <strong>cyber compromise, physical sabotage, natural electromagnetic events, and systemic cascade failure</strong>. It concludes with a responsible disclosure framework and resilience recommendations.</p>
+
+    <div class="stat-row">
+      <div class="stat-block">
+        <span class="stat-num">19M</span>
+        <span class="stat-label">People supplied by Rand Water</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num red">44.8%</span>
+        <span class="stat-label">Non-revenue water loss (2025)</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num yellow">R7B</span>
+        <span class="stat-label">Annual revenue deficit — Joburg Water</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num red">3</span>
+        <span class="stat-label">Near-collapse events 2024–2026</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-num">27</span>
+        <span class="stat-label">Active mines on the same network</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: THE DEPENDENCY CHAIN -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02 //</span>
+      <h2 class="section-title">THE DEPENDENCY <span>CHAIN</span></h2>
+    </div>
+
+    <p class="prose">Understanding the cascade is the foundation of any resilience plan. Gauteng's water does not flow by gravity — it is <strong>pumped uphill from the Vaal system</strong>, making it uniquely vulnerable to power loss and mechanical failure at key pump stations. The chain below shows how a single node failure propagates:</p>
+
+    <div class="dep-chain">
+      <div class="dep-node source">LESOTHO HIGHLANDS<br><small>Source water</small></div>
+      <span class="dep-arrow">→</span>
+      <div class="dep-node source">VAAL DAM SYSTEM<br><small>Storage</small></div>
+      <span class="dep-arrow">→</span>
+      <div class="dep-node critical">RAND WATER<br>PUMP STATIONS<br><small>Eikenhof · Palmiet · Zwartkopjes</small></div>
+      <span class="dep-arrow">→</span>
+      <div class="dep-node critical">VALVE CONTROL<br>NETWORKS<br><small>SCADA / manual</small></div>
+      <span class="dep-arrow">→</span>
+      <div class="dep-node">METRO<br>RESERVOIRS<br><small>Joburg · Tshwane · EKU</small></div>
+      <span class="dep-arrow">→</span>
+      <div class="dep-node">19M PEOPLE<br>+ 27 MINES<br><small>End users</small></div>
+    </div>
+
+    <div class="pull-quote">
+      "While Rand Water continues to investigate how a crucial valve in its water system stayed closed for days, contributing to huge water shortages across Johannesburg, experts say South Africans should brace for an 'acceleration' of water supply disasters. What we know from other parts of the country is that once these breakdowns happen, they happen more frequently and for longer."
+      <cite>— Water expert Anthony Turton, Sunday Times, March 2024</cite>
+    </div>
+
+    <p class="prose"><strong>Critical single points of failure already on record:</strong> In March 2024, a single closed valve at Eikenhof Pump Station triggered citywide shortages. In November 2024, a single damaged circuit breaker at Palmiet Pump Station cut supply to millions. Both events were accidental — and both demonstrated that <em>deliberate</em> interference at these nodes would have identical or worse outcomes.</p>
+  </div>
+
+  <!-- SECTION 3: THREAT CATEGORIES -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03 //</span>
+      <h2 class="section-title">THREAT <span>CATEGORIES</span></h2>
+    </div>
+
+    <p class="prose">Four primary threat vectors apply to valve-controlled water infrastructure. Each is assessed by likelihood in the South African context, potential impact, and current level of defensive coverage.</p>
+
+    <table class="threat-table">
+      <thead>
+        <tr>
+          <th>Threat Vector</th>
+          <th>Mechanism</th>
+          <th>SA Likelihood</th>
+          <th>Impact</th>
+          <th>Current Defence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cyber / SCADA Compromise</strong></td>
+          <td>Remote manipulation of valve actuator control systems via internet-exposed SCADA/ICS platforms</td>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td><span class="badge badge-medium">PARTIAL</span></td>
+        </tr>
+        <tr>
+          <td><strong>Physical Sabotage / Vandalism</strong></td>
+          <td>Manual valve tampering, pipe cutting, theft of actuator components — already documented at Leeukraal Dam and multiple Tshwane sites</td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td><span class="badge badge-medium">MINIMAL</span></td>
+        </tr>
+        <tr>
+          <td><strong>Insider Threat</strong></td>
+          <td>Authorised personnel deliberately misoperating valves; corruption enabling third-party access to control infrastructure</td>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td><span class="badge badge-low">UNKNOWN</span></td>
+        </tr>
+        <tr>
+          <td><strong>Power Cascade (Eskom Dependency)</strong></td>
+          <td>Load shedding, substation failure, or deliberate grid attack disabling pump stations; valves default to closed or uncontrolled states</td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td><span class="badge badge-medium">PARTIAL</span></td>
+        </tr>
+        <tr>
+          <td><strong>Solar Flare / Geomagnetic Storm</strong></td>
+          <td>X-class CME inducing ground currents that destroy transformer windings, SCADA electronics, and actuator control boards simultaneously across the network</td>
+          <td><span class="badge badge-medium">MODERATE</span></td>
+          <td><span class="badge badge-critical">CATASTROPHIC</span></td>
+          <td><span class="badge badge-low">NONE</span></td>
+        </tr>
+        <tr>
+          <td><strong>Systemic Cascade / Age Failure</strong></td>
+          <td>Degraded infrastructure reaching simultaneous failure threshold; aging valve bodies, corroded actuators, non-maintained gate valves failing to seal</td>
+          <td><span class="badge badge-critical">ALREADY OCCURRING</span></td>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td><span class="badge badge-medium">REACTIVE ONLY</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- CYBER -->
+    <div class="mono-label">VECTOR DETAIL — CYBER / SCADA</div>
+    <div class="card-grid">
+      <div class="card card-accent">
+        <span class="card-icon">🔌</span>
+        <div class="card-title">SCADA EXPOSURE</div>
+        <p>Industrial control systems managing valve actuators in many South African municipalities were deployed in an era before cybersecurity was considered. Many operate on legacy protocols (Modbus, DNP3) not designed for networked environments. Smart valve upgrades are increasing internet exposure without proportional security investment.</p>
+      </div>
+      <div class="card card-accent">
+        <span class="card-icon">🔐</span>
+        <div class="card-title">AUTHENTICATION GAPS</div>
+        <p>Operational technology (OT) networks in water utilities frequently use default credentials, shared passwords, and no multi-factor authentication. Remote access for maintenance — critical in a country the size of South Africa — creates persistent access points.</p>
+      </div>
+      <div class="card card-accent">
+        <span class="card-icon">⚡</span>
+        <div class="card-title">ATTACK CONSEQUENCE</div>
+        <p>A cyber actor with SCADA access could simultaneously close isolation valves across multiple zones, open pressure-relief valves to drain reservoirs, manipulate chemical dosing valves to dangerous ratios, or simply generate conflicting valve commands that physically damage actuator motors through rapid cycling.</p>
+      </div>
+    </div>
+
+    <!-- PHYSICAL -->
+    <div class="sep"></div>
+    <div class="mono-label">VECTOR DETAIL — PHYSICAL / VANDALISM</div>
+    <p class="prose">South Africa's infrastructure vandalism problem is not theoretical. Researcher Malaika Mahlatsi documented <strong>extensive vandalism at Leeukraal Dam in Hammanskraal</strong> — damage so severe that structures had to be abandoned and rebuilt. The Rand Water maintenance report of July 2025 explicitly listed <em>vandalism of infrastructure</em> as a contributing factor to restoration delays. Valve chambers across Gauteng operate without perimeter monitoring in many locations.</p>
+
+    <!-- SOLAR FLARE -->
+    <div class="sep"></div>
+    <div class="mono-label">VECTOR DETAIL — SOLAR FLARE / GEOMAGNETIC EVENT</div>
+    <div class="card-grid">
+      <div class="card card-yellow">
+        <span class="card-icon">☀️</span>
+        <div class="card-title">THE CARRINGTON SCENARIO</div>
+        <p>An X-class coronal mass ejection (CME) of the magnitude of the 1859 Carrington Event would generate geomagnetically induced currents (GICs) capable of destroying high-voltage transformer windings across the entire Eskom grid simultaneously — likely a multi-year repair scenario.</p>
+      </div>
+      <div class="card card-yellow">
+        <span class="card-icon">🛑</span>
+        <div class="card-title">SA-SPECIFIC RISK</div>
+        <p>South Africa sits at a latitude where geomagnetic storm impacts are amplified by the <strong>South Atlantic Anomaly</strong> — a known weakness in Earth's magnetic field that makes South African infrastructure disproportionately vulnerable to space weather events compared to most other countries.</p>
+      </div>
+      <div class="card card-yellow">
+        <span class="card-icon">💧</span>
+        <div class="card-title">WATER SYSTEM IMPACT</div>
+        <p>Without Eskom power, Rand Water's pump stations stop. Without pumping, reservoirs drain within hours. Without SCADA, operators lose situational awareness of valve states. Without actuator power, electric valves freeze in last position — which may be closed, throttled, or mid-stroke. Manual override requires physical presence at every node.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: SOCIAL IMPACT MODELING -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04 //</span>
+      <h2 class="section-title">SOCIAL IMPACT <span>MODELING</span></h2>
+    </div>
+
+    <p class="prose">A significant water outage across Gauteng does not affect all demographics equally. The impact cascade follows a predictable social geography. Areas with lower private storage capacity, higher population density, compromised road access, and lower municipal responsiveness are disproportionately affected — as was clearly demonstrated in the March 2024 crisis.</p>
+
+    <div class="zone-grid">
+      <div class="zone-card">
+        <div class="zone-name">SOWETO / SOUTH JOBURG</div>
+        <div class="zone-pop">~3.5M residents · High density</div>
+        <ul class="zone-items">
+          <li>Private storage capacity <span class="zone-risk" style="color:#ff6b6b">VERY LOW</span></li>
+          <li>JoJo tank prevalence <span class="zone-risk" style="color:#ff6b6b">VERY LOW</span></li>
+          <li>Borehole fallback <span class="zone-risk" style="color:#ff6b6b">NONE</span></li>
+          <li>Social unrest threshold <span class="zone-risk" style="color:#ff6b6b">72 HOURS</span></li>
+          <li>Clinic / health facility risk <span class="zone-risk" style="color:#ffaa40">HIGH</span></li>
+          <li>Fire suppression loss <span class="zone-risk" style="color:#ff6b6b">CRITICAL</span></li>
+        </ul>
+      </div>
+      <div class="zone-card">
+        <div class="zone-name">MAMELODI / ATTERIDGEVILLE</div>
+        <div class="zone-pop">~600K residents · Tshwane east/west</div>
+        <ul class="zone-items">
+          <li>Private storage capacity <span class="zone-risk" style="color:#ff6b6b">LOW</span></li>
+          <li>Informal settlement exposure <span class="zone-risk" style="color:#ff6b6b">HIGH</span></li>
+          <li>River contamination risk <span class="zone-risk" style="color:#ff6b6b">HIGH</span></li>
+          <li>Social unrest threshold <span class="zone-risk" style="color:#ff6b6b">48–72 HOURS</span></li>
+          <li>Diplomatic zone proximity <span class="zone-risk" style="color:#ffaa40">MODERATE</span></li>
+          <li>Hospital supply chain <span class="zone-risk" style="color:#ffaa40">HIGH RISK</span></li>
+        </ul>
+      </div>
+      <div class="zone-card">
+        <div class="zone-name">RIETONDALE / ARCADIA</div>
+        <div class="zone-pop">~80K residents · Mixed urban</div>
+        <ul class="zone-items">
+          <li>Govt precinct proximity <span class="zone-risk" style="color:#f5c518">SIGNIFICANT</span></li>
+          <li>Private storage capacity <span class="zone-risk" style="color:#f5c518">MODERATE</span></li>
+          <li>Hospital cluster (Steve Biko) <span class="zone-risk" style="color:#ff6b6b">CRITICAL</span></li>
+          <li>Embassy row exposure <span class="zone-risk" style="color:#f5c518">NOTABLE</span></li>
+          <li>Social stability <span class="zone-risk" style="color:#00c8ff">HIGHER</span></li>
+          <li>Borehole prevalence <span class="zone-risk" style="color:#f5c518">LOW-MOD</span></li>
+        </ul>
+      </div>
+      <div class="zone-card">
+        <div class="zone-name">SANDTON / ROSEBANK</div>
+        <div class="zone-pop">~250K residents · High income</div>
+        <ul class="zone-items">
+          <li>Private storage capacity <span class="zone-risk" style="color:#00c8ff">HIGH</span></li>
+          <li>Borehole prevalence <span class="zone-risk" style="color:#00c8ff">MODERATE</span></li>
+          <li>Commercial/banking risk <span class="zone-risk" style="color:#ff6b6b">CRITICAL</span></li>
+          <li>Hotel/hospitality supply <span class="zone-risk" style="color:#ffaa40">HIGH</span></li>
+          <li>Social unrest threshold <span class="zone-risk" style="color:#00c8ff">&gt;7 DAYS</span></li>
+          <li>Reputational / forex impact <span class="zone-risk" style="color:#ff6b6b">IMMEDIATE</span></li>
+        </ul>
+      </div>
+      <div class="zone-card">
+        <div class="zone-name">ROODEPOORT / WEST RAND</div>
+        <div class="zone-pop">~300K residents · Mixed suburban</div>
+        <ul class="zone-items">
+          <li>Mine water dependency <span class="zone-risk" style="color:#f5c518">NOTABLE</span></li>
+          <li>Elevation challenges <span class="zone-risk" style="color:#ffaa40">HIGH</span></li>
+          <li>Medicross / clinic supply <span class="zone-risk" style="color:#ff6b6b">HIGH RISK</span></li>
+          <li>Private storage capacity <span class="zone-risk" style="color:#f5c518">LOW-MOD</span></li>
+          <li>Road grid for tankers <span class="zone-risk" style="color:#00c8ff">ADEQUATE</span></li>
+          <li>Social stability <span class="zone-risk" style="color:#f5c518">MODERATE</span></li>
+        </ul>
+      </div>
+      <div class="zone-card">
+        <div class="zone-name">DIEPSLOOT / ALEXANDRA</div>
+        <div class="zone-pop">~400K residents · Dense informal</div>
+        <ul class="zone-items">
+          <li>Private storage capacity <span class="zone-risk" style="color:#ff6b6b">NONE</span></li>
+          <li>Sanitation collapse risk <span class="zone-risk" style="color:#ff6b6b">IMMEDIATE</span></li>
+          <li>Disease outbreak risk <span class="zone-risk" style="color:#ff6b6b">CRITICAL</span></li>
+          <li>Social unrest threshold <span class="zone-risk" style="color:#ff6b6b">&lt;24 HOURS</span></li>
+          <li>Road tanker access <span class="zone-risk" style="color:#ff6b6b">DIFFICULT</span></li>
+          <li>Child mortality exposure <span class="zone-risk" style="color:#ff6b6b">HIGH</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+    <div class="mono-label">OUTAGE TIMELINE — PROJECTED SOCIAL CASCADE</div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-time">0 – 6 HOURS</div>
+        <div class="tl-title">System pressure loss / tap dryout</div>
+        <div class="tl-desc">Elevated and distal areas lose supply first. High-density informal settlements begin queuing at communal taps and nearby streams. Hospitals activate emergency water protocols.</div>
+      </div>
+      <div class="tl-item yellow">
+        <div class="tl-time">6 – 24 HOURS</div>
+        <div class="tl-title">Sanitation cascade begins</div>
+        <div class="tl-desc">Flush toilet systems fail in low-storage zones. Open defecation risk rises sharply in dense areas. Clinics and dental practices cannot operate instrument sterilisation. Food service industry shutters.</div>
+      </div>
+      <div class="tl-item red">
+        <div class="tl-time">24 – 72 HOURS</div>
+        <div class="tl-title">Social order threshold breached in vulnerable zones</div>
+        <div class="tl-desc">Historical precedent (March 2024) shows protest action, road closures, and confrontations begin within this window in Soweto, Diepsloot, and Alexandra. Tanker deployment is insufficient — supply lag creates bottlenecks. Looting of retail water stock reported.</div>
+      </div>
+      <div class="tl-item red">
+        <div class="tl-time">72 HOURS – 7 DAYS</div>
+        <div class="tl-title">Medical crisis, economic halt, political destabilisation</div>
+        <div class="tl-desc">Waterborne disease transmission begins. Hospitals at critical risk. Industrial and mining operations suspend. Financial sector flags economic emergency. Government faces constitutional obligation to intervene under Sections 27 and 24 of the Bill of Rights.</div>
+      </div>
+      <div class="tl-item red">
+        <div class="tl-time">7+ DAYS (Solar Flare / Mass Failure Scenario)</div>
+        <div class="tl-title">Systemic collapse</div>
+        <div class="tl-desc">If power infrastructure is also destroyed (CME or coordinated attack), restoration timelines extend to months. Manual valve operation requires physical crews at hundreds of nodes simultaneously. Expertise to manually rebalance a network of this complexity is concentrated in a handful of individuals.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: WHAT ALREADY HAPPENED -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05 //</span>
+      <h2 class="section-title">DOCUMENTED <span>REAL EVENTS</span></h2>
+    </div>
+    <p class="prose">The following events are on public record and require no speculation. They constitute a threat proof-of-concept by negligence and system fragility alone.</p>
+    <div class="card-grid">
+      <div class="card card-red">
+        <span class="card-icon">📅</span>
+        <div class="card-title">MARCH 2024 — VALVE CRISIS</div>
+        <p>A crucial Rand Water valve remained <strong>closed for multiple days</strong> — cause unconfirmed, investigation undertaken. Joburg Water declared the system in "severe strain." Millions in Soweto, Diepkloof, Orlando, Mofolo, and Meadowlands lost supply. Rand Water warned of imminent system-wide collapse.</p>
+      </div>
+      <div class="card card-red">
+        <span class="card-icon">📅</span>
+        <div class="card-title">NOV 2024 — PALMIET PUMP FAILURE</div>
+        <p>A <strong>single damaged circuit breaker</strong> at Palmiet Pump Station triggered mass outages across Joburg, Tshwane, and Ekurhuleni. Rand Water issued no public statement; DA called the silence "deeply concerning." Event exposed that one mechanical fault = metro-scale impact.</p>
+      </div>
+      <div class="card card-red">
+        <span class="card-icon">📅</span>
+        <div class="card-title">JULY 2025 — ZUIKERBOSCH EXPLOSION</div>
+        <p>A <strong>motor explosion</strong> at the Zuikerbosch water treatment plant — one of Rand Water's primary treatment facilities — forced all other stations to pump at full load to compensate. A single infrastructure failure required system-wide emergency response.</p>
+      </div>
+      <div class="card card-yellow">
+        <span class="card-icon">📅</span>
+        <div class="card-title">FEB 2026 — COLLAPSE WARNING</div>
+        <p>Rand Water issued a formal system-collapse warning for Joburg, Ekurhuleni, Tshwane, and parts of Mpumalanga and North West — requiring load-shifting (redirecting water between zones via valve manipulation) to prevent total failure. The system was operating with no reserve margin.</p>
+      </div>
+      <div class="card card-yellow">
+        <span class="card-icon">📅</span>
+        <div class="card-title">ONGOING — VANDALISM</div>
+        <p>Infrastructure vandalism documented across the City of Tshwane network. Leeukraal Dam structures abandoned due to vandalism severity. Rand Water maintenance delays explicitly attributed to vandalism. No systematic physical security programme is documented publicly.</p>
+      </div>
+      <div class="card card-yellow">
+        <span class="card-icon">📅</span>
+        <div class="card-title">ONGOING — 44.8% WATER LOSS</div>
+        <p>Parliament was told in 2025 that 44.8% of Joburg's treated water is non-revenue — either leaking, stolen, or unmetered. This creates a R7 billion annual deficit, directly limiting the funds available for the maintenance and valve upgrades that would close these security gaps.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: RESPONSIBLE DISCLOSURE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06 //</span>
+      <h2 class="section-title">RESPONSIBLE <span>DISCLOSURE</span></h2>
+    </div>
+
+    <p class="prose">If you identify a specific vulnerability in water infrastructure — a physically unsecured valve chamber, an exposed SCADA interface, a misconfigured remote-access portal, or suspicious activity near a pump station — the following are the correct official channels in South Africa. <strong>Do not publish specific vulnerabilities publicly before allowing these bodies time to respond (standard: 90 days).</strong></p>
+
+    <div class="disclosure-grid">
+      <div class="disc-card">
+        <div class="disc-org">RAND WATER</div>
+        <div class="disc-full">Primary Bulk Water Utility — Gauteng</div>
+        <div class="disc-contact">📞 0860 10 10 60 (Operations 24hr)</div>
+        <div class="disc-contact">🌐 randwater.co.za</div>
+        <p class="disc-note">First contact for any operational vulnerability or suspicious access to Rand Water infrastructure. Has a dedicated 24-hour operations centre.</p>
+      </div>
+      <div class="disc-card yellow">
+        <div class="disc-org">DWS</div>
+        <div class="disc-full">Dept. of Water and Sanitation — National Government</div>
+        <div class="disc-contact">📞 0800 200 200 (Water Hotline)</div>
+        <div class="disc-contact">🌐 dws.gov.za</div>
+        <p class="disc-note">Regulatory oversight of all water utilities. National Water Crisis Committee (NWCC) now chairs at Presidential level — escalation path for systemic issues.</p>
+      </div>
+      <div class="disc-card red">
+        <div class="disc-org">SSDA / NCCC</div>
+        <div class="disc-full">State Security Agency + National Critical Infrastructure Council</div>
+        <div class="disc-contact">📞 State Security Agency: 012 427 4000</div>
+        <div class="disc-contact">🌐 ssa.gov.za</div>
+        <p class="disc-note">For threats with deliberate (terrorist/criminal) intent or cyber-origin. Water infrastructure is formally designated critical national infrastructure under the Critical Infrastructure Protection Act (Act 8 of 2019).</p>
+      </div>
+      <div class="disc-card">
+        <div class="disc-org">SAPS</div>
+        <div class="disc-full">SA Police Service — Critical Infrastructure Unit</div>
+        <div class="disc-contact">📞 10111 / 08600 10111</div>
+        <div class="disc-contact">🌐 saps.gov.za</div>
+        <p class="disc-note">Physical threats, active tampering, or vandalism in progress. SAPS has a Critical Infrastructure unit under the Hawks/DPCI for coordinated infrastructure crime.</p>
+      </div>
+      <div class="disc-card yellow">
+        <div class="disc-org">CSIRT-SA</div>
+        <div class="disc-full">Computer Security Incident Response Team — South Africa</div>
+        <div class="disc-contact">📧 csirt@gov.za</div>
+        <div class="disc-contact">🌐 csirt.org.za</div>
+        <p class="disc-note">For cyber vulnerabilities in SCADA, ICS, or control systems managing water infrastructure. The appropriate channel for responsible disclosure of digital security issues.</p>
+      </div>
+      <div class="disc-card red">
+        <div class="disc-org">JOBURG WATER / TSHWANE WATER</div>
+        <div class="disc-full">Metro-level utilities — direct municipal channels</div>
+        <div class="disc-contact">Joburg: 0860 562 874</div>
+        <div class="disc-contact">Tshwane: 012 358 9999</div>
+        <p class="disc-note">For local distribution network vulnerabilities within metro boundaries. These entities manage the valve chambers and local network downstream from Rand Water's bulk supply.</p>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+    <div class="mono-label">BUG BOUNTY — DOES ONE EXIST FOR SA WATER INFRASTRUCTURE?</div>
+    <p class="prose">As of this report's compilation, <strong>no formal bug bounty programme</strong> exists in South Africa specifically for water infrastructure. Internationally, the US EPA and DHS CISA operate coordinated vulnerability disclosure programmes for ICS/SCADA in water systems. South Africa's <strong>Critical Infrastructure Protection Act (Act 8 of 2019)</strong> creates the legal framework but does not yet fund researcher incentive programmes.</p>
+    <p class="prose"><strong>The opportunity:</strong> An advocacy paper addressed to the National Water Crisis Committee recommending a formal CVD (Coordinated Vulnerability Disclosure) programme for water ICS — with researcher safe harbour provisions — would be a meaningful civic contribution. South Africa could follow the model of the Netherlands' NCSC, which has a mature CVD policy covering public utilities including water.</p>
+  </div>
+
+  <!-- SECTION 7: RESILIENCE RECOMMENDATIONS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">07 //</span>
+      <h2 class="section-title">RESILIENCE <span>RECOMMENDATIONS</span></h2>
+    </div>
+
+    <div class="rec-list">
+      <div class="rec-item">
+        <div class="rec-num">01</div>
+        <div class="rec-body">
+          <div class="rec-title">Valve Chamber Physical Security Audit</div>
+          <div class="rec-desc">All critical isolation valve chambers — particularly at pump station inlets and reservoir feed points — should undergo a physical security audit. Minimum standard: tamper-evident seals, access logging, CCTV or proximity sensing. The March 2024 "closed valve" event has never been publicly explained.</div>
+          <span class="rec-tag physical">Physical</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-num">02</div>
+        <div class="rec-body">
+          <div class="rec-title">SCADA Air-Gap Verification + OT Network Segmentation</div>
+          <div class="rec-desc">All operational technology (OT) networks controlling valve actuators must be air-gapped or at minimum segmented via hardened DMZ from internet-facing networks. Remote access for maintenance should require hardware tokens and be fully logged. Smart valve upgrades must include OT security assessment before deployment.</div>
+          <span class="rec-tag cyber">Cyber</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-num">03</div>
+        <div class="rec-body">
+          <div class="rec-title">Solar Flare / EMP Preparedness Protocol</div>
+          <div class="rec-desc">South Africa's South Atlantic Anomaly exposure is uniquely severe. Rand Water should maintain Faraday-shielded emergency control boards and manual valve operation procedures for all critical nodes. Transformer spares strategy should account for extended grid-down scenarios. The 2019 Carrington-scale planning exercise (NERC E3 studies) should be adopted as a template.</div>
+          <span class="rec-tag natural">Natural Event</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-num">04</div>
+        <div class="rec-body">
+          <div class="rec-title">Single-Point-of-Failure Elimination at Palmiet, Eikenhof, Zwartkopjes</div>
+          <div class="rec-desc">Both 2024 collapse events originated from single mechanical failures at named pump stations. N+1 redundancy for circuit breakers, actuator power supplies, and critical valve controllers at these three stations should be treated as a national security priority, not a budget line item subject to deferral.</div>
+          <span class="rec-tag physical">Physical</span>
+          <span class="rec-tag cyber">Cyber</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-num">05</div>
+        <div class="rec-body">
+          <div class="rec-title">Community Resilience Stratification for Vulnerable Zones</div>
+          <div class="rec-desc">A pre-positioned tanker deployment plan — mapped to the social geography of Diepsloot, Alexandra, Meadowlands, and Mamelodi — should be activatable within 6 hours of a supply failure, not 24–48 hours as experienced in 2024. Community water point mapping should be publicly accessible and distributed to ward councillors.</div>
+          <span class="rec-tag policy">Policy</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-num">06</div>
+        <div class="rec-body">
+          <div class="rec-title">Establish a SA Water Infrastructure CVD Programme</div>
+          <div class="rec-desc">A formal Coordinated Vulnerability Disclosure (CVD) programme — modelled on the Netherlands NCSC framework — would create a legal safe harbour for security researchers identifying water ICS vulnerabilities. The National Water Crisis Committee is the appropriate body to champion this. Even a no-reward programme with clear disclosure timelines and a named contact person at CSIRT-SA would be a significant improvement on the current vacuum.</div>
+          <span class="rec-tag policy">Policy</span>
+          <span class="rec-tag cyber">Cyber</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <div class="rec-num">07</div>
+        <div class="rec-body">
+          <div class="rec-title">Publish Real-Time System Status Transparency</div>
+          <div class="rec-desc">The November 2024 Palmiet event was marked by Rand Water's silence while millions had dry taps. A public-facing system status dashboard — showing reservoir levels, active maintenance, and restoration timelines — would reduce panic, enable informed self-preparation, and hold the utility accountable. The data already exists internally; it should be public.</div>
+          <span class="rec-tag policy">Policy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: CONCLUSION -->
+  <div class="section" style="border-bottom:none;">
+    <div class="section-header">
+      <span class="section-num">08 //</span>
+      <h2 class="section-title">CONCLUSION</h2>
+    </div>
+    <p class="prose">South Africa does not need a sophisticated adversary to experience a water infrastructure catastrophe. The events of 2024–2026 demonstrate that the system is already operating at the edge of its tolerance under normal conditions. A single valve, a single circuit breaker, a single pump motor — any of these has already triggered metro-scale supply failure.</p>
+    <p class="prose">The threat landscape — spanning cyber compromise, physical vandalism, insider risk, Eskom dependency, and natural electromagnetic events — sits against a backdrop of a system running on a <strong>44.8% loss rate, a R7 billion annual deficit, aging infrastructure, and documented negligence</strong>. The compounding risks are structural, not speculative.</p>
+    <p class="prose">The most effective counter-terrorism measure for this infrastructure is not classified intelligence — it is <strong>maintenance funding, physical security of valve chambers, OT cybersecurity basics, and transparent communication with the public</strong>. These are achievable. They require political will, not technology.</p>
+    <p class="prose" style="color:var(--accent); font-style:italic;">Whoever controls the valves controls the city. Right now, South Africa's valves are poorly guarded, underfunded, and one incident away from collapse. That is the most important finding of this report.</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <div class="footer-brand">DR<span>VREY</span>™</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;">CIVIC INTELLIGENCE · SOUTH AFRICA · 2026</div>
+  </div>
+  <div class="footer-note">
+    This document is produced for public awareness and civic education purposes. All data cited is from publicly reported South African events and peer-reviewed market intelligence. No exploitation techniques, attack methodologies, or system credentials are contained herein. Responsible disclosure channels are official government bodies only. Prepared by Dr. M.D. Vrey (BDS) under the DRVREY™ Civic Intelligence Series.
+  </div>
+</div>
+
+</body>
+</html>
