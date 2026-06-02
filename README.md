@@ -36,3 +36,24 @@ self-model snapshot. This is the persistent cognitive body.
 - `awakening_seed.py` — First-boot knowledge graph seed from Claude
 - `vrey_cache/` — Persistent state (arc_memory.json, mishka_model.json, vital_data.json)
 - 
+version: '3.8'
+
+services:
+  vrey:
+    build: .
+    container_name: vrey-demon
+    restart: unless-stopped
+    ports:
+      - "6666:6666"
+    volumes:
+      - ./vrey_cache:/app/vrey_cache
+      - ./vrey_memory_trace.log:/app/vrey_memory_trace.log
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Optional: Give full network access
+    networks:
+      - vrey-net
+
+networks:
+  vrey-net:
+    driver: bridge
